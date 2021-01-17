@@ -3,7 +3,10 @@
   <% @discounts.each do |discount| %>
     <li id="bulk-discount-<%= discount.id %>">
     bulk amount:<%= discount.quantity_threshold %>
-    percentage:<%= link_to "#{percentage(discount.discount)}", merchant_bulk_discount_path(params[:merchant_id],discount.id) %>
+    percentage:<%= percentage(discount.discount) %>
+    <%= link_to 'Discount Link', merchant_bulk_discount_path(params[:merchant_id],discount.id) %>
     </li>
   <% end %>
 </ul>
+
+<%= button_to "Create New Discount", new_merchant_bulk_discount_path(params[:merchant_id]), method: :get %>

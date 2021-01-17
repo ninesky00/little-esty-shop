@@ -8,6 +8,8 @@ module ApplicationHelper
   end
 
   def percentage(number)
-    (number * 100).to_i.to_s + "%"
+    if number
+    number / 100.0
+    end
   end
 end
