@@ -4,6 +4,7 @@ RSpec.describe "bulk discount" do
   before :each do 
     @merchant = create(:merchant)
     @discount = create(:discount, merchant_id: @merchant.id)
+    @discount2 = create(:discount, merchant_id: @merchant.id)
   end
 
   describe "merchant bulk discount index" do 
@@ -41,6 +42,17 @@ RSpec.describe "bulk discount" do
         expect(page).to have_content(20)
         expect(page).to have_content(0.2)
       end
+    end
+
+    it "displays a link to delete each discount" do 
+      visit merchant_bulk_discounts_path(@merchant)
+
+      expect(page).to have_css("#bulk-discount-#{@discount2.id}")
+      within("#bulk-discount-#{@discount2.id}") do 
+        expect(page).to have_button('Delete Discount')
+        click_on "Delete Discount"
+      end
+      expect(page).to_not have_css("#bulk-discount-#{@discount2.id}")
     end
   end
 end
