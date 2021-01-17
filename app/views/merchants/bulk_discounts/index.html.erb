@@ -5,6 +5,7 @@
     bulk amount:<%= discount.quantity_threshold %>
     percentage:<%= percentage(discount.discount) %>
     <%= link_to 'Discount Link', merchant_bulk_discount_path(params[:merchant_id],discount.id) %>
+    <%= button_to "Delete Discount", {action: :destroy, id: discount}, method: :delete, data: {confirm: "Are you sure?"} %>
     </li>
   <% end %>
 </ul>
