@@ -17,7 +17,7 @@ RSpec.describe "merchant bulk discount" do
 
       within("#bulk-discount-#{@merchant.bulk_discounts.last.id}") do 
         expect(page).to have_content(20)
-        expect(page).to have_content(0.2)
+        expect(page).to have_content(20)
       end
     end
   end
