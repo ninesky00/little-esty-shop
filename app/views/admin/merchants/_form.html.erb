@@ -1,4 +1,5 @@
-<%= form_tag(locals[:path] , method: (params[:action] == "edit" ? :patch : :post)) %>
-Name:
-<%= text_field_tag :name, value: (params[:action] == "edit" ? @merchant.name : nil) %>
-<%= submit_tag "Submit" %>
+<%= form_with model: @merchant, local: true, url: locals[:path], method: locals[:method] do |f| %>
+<%= f.label :name %>
+<%= f.text_field :name %>
+<%= f.submit "Submit" %>
+<% end %>

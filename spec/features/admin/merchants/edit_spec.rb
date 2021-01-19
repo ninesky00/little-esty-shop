@@ -12,7 +12,7 @@ describe "Admin Merchants Edit Page" do
 
   it "redirects to the merchant's show page with a flash message and the updated information is present" do
     added_text = "32yq8fgqadj"
-    fill_in "name", with: added_text
+    fill_in("merchant[name]", with: added_text)
     click_on "Submit"
 
     expect(current_path).to eq(admin_merchant_path(@merchant.id))
@@ -21,8 +21,7 @@ describe "Admin Merchants Edit Page" do
   end
 
   it "properly handles an empty name" do
-    added_text = ""
-    fill_in "name", with: added_text
+    fill_in("merchant[name]", with: "")
     click_on "Submit"
 
     #expect(current_path).to eq(edit_admin_merchant_path(@merchant.id))

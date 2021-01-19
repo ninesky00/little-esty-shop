@@ -4,39 +4,64 @@
 
 "Little Esty Shop" is a group project that requires students to build a fictitious e-commerce platform where merchants and admins can manage inventory and fulfill customer invoices.
 
-## Learning Goals
-- Practice designing a normalized database schema and defining model relationships
-- Utilize advanced routing techniques including namespacing to organize and group like functionality together.
-- Utilize advanced active record techniques to perform complex database queries
-- Turn open ended features into detailed user stories utilizing Github issues and a Github project board
-- Practice consuming a public API while utilizing POROs as a way to apply OOP principles to organize code
 
-## Requirements
-- must use Rails 5.2.x
-- must use PostgreSQL
-- all code must be tested via feature tests and model tests, respectively
-- must use GitHub branching, team code reviews via GitHub comments, and github projects to track progress on user stories
-- must include a thorough README to describe the project
-- must deploy completed code to Heroku
+## Goals accomplished 
+- Setup normalized database with one to many and many to many relationships
+- Setup custom rake task to seed the database
+- Utilize advanced active record techniques to perform complex database queries
+- Created a service class and poros search to consume GitHub API
+- Webmock is used to mock API tests
+- Edge cases were added to enhance testing
+- Added view methods in application helper to declutter view calls 
+- Deployed application to [Heroku](https://gentle-forest-90792.herokuapp.com/admin)
 
 ## Setup
+This project requires Ruby 2.5.3.  
+This project requires Rails 5.2.3 and later  
+1. Clone this repository
+```
+git clone https://github.com/cunninghamge/little-esty-shop
+```
+2. Install dependencies
+```
+bundle install
+```
+Note: you will need to install gem install bundler if you don't have bundler  
+3. Database setup
+```
+rails db:setup
+rake csv_load:all
+```
+## Usage
+Run the testing suite in the terminal with
+```
+bundle exec rspec
+```
+Start the server in the command line with 
+```
+rails server
+```
+Navigate [localhost:3000](http://localhost:3000)
 
-This project requires Ruby 2.5.3.
+## Database Scheme
+![Schema](media/database_schema.png)
 
-* Fork this repository
-* Clone your fork
-* From the command line, install gems and set up your DB:
-    * `bundle`
-    * `rails db:create`
-* Run the test suite with `bundle exec rspec`.
-* Run your development server with `rails s` to see the app in action.
+## Technologies
+- Ruby
+- Ruby on Rails
+### Utilities
+- rspec-rails
+- factory_bot_rails
+- faker
+- simplecov
+- webmock
 
-## Phases
 
-1. [Database Setup](./doc/db_setup.md)
-1. [User Stories](./doc/user_stories.md)
-1. [Extensions](./doc/extensions.md)
+## Project details 
+From [Turing School](https://github.com/turingschool-examples/little-esty-shop)
 
-## Evaluation
-
-At the end of the project, you will be assessed based on [this Rubric](./doc/rubric.md)
+## Contributors
+[Gus Cunningham](https://github.com/cunninghamge)
+[Grayson Myers](https://github.com/GrayMyers)
+[Max Ribbans](https://github.com/ribbansmax)
+[Joe Jiang](https://github.com/ninesky00)

@@ -17,7 +17,7 @@ class Admin::MerchantsController < ApplicationController
     merchant = Merchant.find(params[:id])
     if merchant.update(merchant_params)
       flash.notice = ["Successfully Updated Info"]
-      if params[:name]
+      if params[:merchant][:name]
         destination = admin_merchant_path(params[:id])
       else
         destination = admin_merchants_path
@@ -31,6 +31,7 @@ class Admin::MerchantsController < ApplicationController
   end
 
   def new
+    @merchant = Merchant.new
   end
 
   def create
@@ -47,6 +48,6 @@ class Admin::MerchantsController < ApplicationController
   private
 
   def merchant_params
-    params.permit(:name, :enabled)
+    params.require(:merchant).permit(:name, :enabled)
   end
 end
