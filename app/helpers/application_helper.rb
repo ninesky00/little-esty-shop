@@ -6,10 +6,4 @@ module ApplicationHelper
   def name(customer)
     "#{customer.first_name} #{customer.last_name}"
   end
-
-  def percentage(number)
-    if number
-    number / 100.0
-    end
-  end
 end

@@ -9,17 +9,25 @@ class Merchants::BulkDiscountsController < ApplicationController
   end
 
   def create
-    discount = BulkDiscount.create!(bulk_discount_params.merge(merchant: @merchant))
+    BulkDiscount.create!(bulk_discount_params.merge(merchant: @merchant))
     redirect_to merchant_bulk_discounts_path(@merchant)
   end
 
   def show
+    @discount = BulkDiscount.find params[:id]
   end
 
   def edit
+    @discount = BulkDiscount.find params[:id]
   end
 
   def update
+    discount = BulkDiscount.find params[:id]
+    if discount.update(bulk_discount_params)
+      redirect_to merchant_bulk_discount_path(@merchant, discount)
+    else 
+      render :edit
+    end
   end
 
   def destroy
