@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "admin invoices show page" do
   before :each do 
+    @merchant = FactoryBot.create(:merchant)
     @invoice = FactoryBot.create(:invoice)
     FactoryBot.create_list(:invoice_item, 4, invoice_id: @invoice.id )
     visit admin_invoice_path(@invoice.id)
@@ -38,7 +39,7 @@ RSpec.describe "admin invoices show page" do
 
   it "displays total revenue of the current invoice" do 
     within("#invoice-information") do 
-      expect(page).to have_content(@invoice.invoice_items.invoice_amount)
+      expect(page).to have_content(@invoice.invoice_items.invoice_amount_with_discount)
     end
   end
 

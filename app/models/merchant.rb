@@ -2,6 +2,7 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :invoices
   has_many :customers,-> {distinct}, through: :invoices
+  has_many :bulk_discounts
 
   validates :name, presence: true
 

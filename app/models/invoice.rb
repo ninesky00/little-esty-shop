@@ -3,11 +3,12 @@ class Invoice < ApplicationRecord
   has_many :items, through: :invoice_items
   has_many :transactions
   belongs_to :customer
-  belongs_to :merchant
+  belongs_to :merchant, optional: true
 
   enum status: ['in progress', 'completed', 'cancelled']
 
   delegate :invoice_amount, to: :invoice_items
+  delegate :invoice_amount_with_discount, to: :invoice_items
 
   def self.incomplete_invoices
     where(status: "in progress").order(created_at: :asc)
