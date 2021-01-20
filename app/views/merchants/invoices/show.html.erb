@@ -5,6 +5,30 @@
 <p><%= @invoice.status %></p>
 <%= render @invoice.customer %>
 <section id="item-information">
-  <%= render @invoice_items %>
-  <%= render @discounted_items %>
+  <ul>
+    <% @invoice_items.each do |invoice_item| %>
+      <li id="invoice_item-<%= invoice_item.id %>">
+        <p>item name: <%= invoice_item.item.name %></p>
+        <p>quantity: <%= invoice_item.quantity %></p>
+        <p>unit price: <%= invoice_item.unit_price %></p>
+        <p>status: <%= render partial: "status", locals: {
+          object: invoice_item, 
+          text: "Update Item Status!", 
+          options: ["pending", "packaged", "shipped"]} %></p>
+      </li>
+    <% end %>
+
+    <% @discounted_items.each do |invoice_item| %>
+      <li id="invoice_item-<%= invoice_item.id %>">
+        <p>item name: <%= invoice_item.item.name %></p>
+        <p>quantity: <%= invoice_item.quantity %></p>
+        <p>unit price: <%= invoice_item.unit_price %></p>
+        <p>discount link: <%= link_to 'discount link', merchant_bulk_discount_path(@invoice.merchant, id: "#{invoice_item.discount_id}") %></p>
+        <p>status: <%= render partial: "status", locals: {
+          object: invoice_item, 
+          text: "Update Item Status!", 
+          options: ["pending", "packaged", "shipped"]} %></p>
+      </li>
+    <% end %>
+  </ul>
 </section>
