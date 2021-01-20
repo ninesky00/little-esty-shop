@@ -63,6 +63,14 @@ describe InvoiceItem, type: :model do
       expect(@invoice3.invoice_items.invoice_amount_with_discount).to eq(800)
       expect(@invoice4.invoice_items.invoice_amount_with_discount).to eq(1050)
     end
+
+    it "discounted_items" do 
+      @invoice2.invoice_items[0].apply_discount
+      @invoice3.invoice_items[0].apply_discount
+      @invoice4.invoice_items[0].apply_discount
+      expected = @invoice2.invoice_items[0], @invoice3.invoice_items[0], @invoice4.invoice_items[0]
+      expect(InvoiceItem.discounted_items).to eq(expected)
+    end
   end
 
   describe "instance methods" do 
@@ -79,6 +87,16 @@ describe InvoiceItem, type: :model do
       expect(@invoice2.invoice_items[0].discount_id).to eq(@discount.id)
       expect(@invoice3.invoice_items[0].discount_id).to eq(@discount2.id)
       expect(@invoice4.invoice_items[0].discount_id).to eq(@discount3.id)
+    end
+
+    it "discounted" do 
+      @invoice2.invoice_items[0].apply_discount
+      @invoice3.invoice_items[0].apply_discount
+      @invoice4.invoice_items[0].apply_discount
+      expect(@invoice.invoice_items[0].discounted?).to eq(false)
+      expect(@invoice2.invoice_items[0].discounted?).to eq(true)
+      expect(@invoice3.invoice_items[0].discounted?).to eq(true)
+      expect(@invoice4.invoice_items[0].discounted?).to eq(true)
     end
   end
   

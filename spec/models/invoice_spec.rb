@@ -55,7 +55,6 @@ describe Invoice, type: :model do
       items.each do |item|
         create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 1)
       end
-      # create(:transaction, invoice: invoice, result: 0)
 
       expect(invoice.invoice_amount).to eq(25)
     end

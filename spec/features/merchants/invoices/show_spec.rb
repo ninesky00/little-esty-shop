@@ -45,7 +45,6 @@ RSpec.describe "Merchant Invoices show" do
       items.each do |item|
         create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 1)
       end
-      # create(:transaction, invoice: invoice, result: 0)
 
       visit merchant_invoice_path(merchant1, invoice)
 
@@ -124,8 +123,35 @@ RSpec.describe "Merchant Invoices show" do
       end
 
       visit merchant_invoice_path(merchant1, invoice)
-
       expect(page).to have_content("Discounted Invoice Amount: $#{invoice.invoice_amount_with_discount}")
+    end
+
+    it "links next to each invoice item to the discount show page" do 
+      merchant1 = create(:merchant)
+      discount = create(:discount, merchant: merchant1, quantity_threshold: 10, discount: 10)
+      items = create_list(:item, 5, merchant: merchant1, unit_price: 10)
+      discounted_items = create_list(:item, 5, merchant: merchant1, unit_price: 10)
+      customer = create(:customer, first_name: "Linda", last_name: "Mayhew")
+      invoice = create(:invoice, merchant: merchant1, customer: customer)
+
+      items.each do |item|
+        create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 10)
+      end
+
+      discounted_invoice_items = create_list(:invoice_item, 5, invoice: invoice, quantity: 10, unit_price: 10)
+
+      visit merchant_invoice_path(merchant1, invoice)
+
+      discounted_invoice_items.each do |invoice_item|
+        invoice_item.apply_discount
+        if invoice_item.discount_id
+          within("#discount-link-#{invoice_item.id}") do 
+            expect(page).to have_link("discount link")
+            click_on "discount link"
+            expect(current_path).to eq(merchant_bulk_discount_path(merchant1, id: "#{invoice_item.discount_id}"))
+          end
+        end
+      end
     end
   end
 end

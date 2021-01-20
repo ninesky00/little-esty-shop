@@ -38,7 +38,7 @@ RSpec.describe "admin invoices show page" do
 
   it "displays total revenue of the current invoice" do 
     within("#invoice-information") do 
-      expect(page).to have_content(@invoice.invoice_items.invoice_amount)
+      expect(page).to have_content(@invoice.invoice_items.invoice_amount_with_discount)
     end
   end
 
