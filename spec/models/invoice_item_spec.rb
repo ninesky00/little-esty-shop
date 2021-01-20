@@ -76,6 +76,9 @@ describe InvoiceItem, type: :model do
       expect(@invoice2.invoice_items[0].unit_price).to eq(9)
       expect(@invoice3.invoice_items[0].unit_price).to eq(8)
       expect(@invoice4.invoice_items[0].unit_price).to eq(7)
+      expect(@invoice2.invoice_items[0].discount_id).to eq(@discount.id)
+      expect(@invoice3.invoice_items[0].discount_id).to eq(@discount2.id)
+      expect(@invoice4.invoice_items[0].discount_id).to eq(@discount3.id)
     end
   end
   
