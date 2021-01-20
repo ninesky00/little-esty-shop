@@ -6,7 +6,6 @@ class InvoiceItem < ApplicationRecord
   enum status: ["pending", "packaged", "shipped"]
 
   delegate :name, to: :item, prefix: true
-  delegate :bulk_discounts, to: :merchant
 
   def self.invoice_amount
     sum('quantity * unit_price')
@@ -28,7 +27,12 @@ class InvoiceItem < ApplicationRecord
     end
   end
 
-
+  def self.invoice_amount_with_discount
+    self.all.each do |invoice_item|
+      invoice_item.apply_discount
+    end
+    self.invoice_amount
+  end
 
   # def self.invoice_amount_with_discount
   #   invoice_amount - discounted_price
