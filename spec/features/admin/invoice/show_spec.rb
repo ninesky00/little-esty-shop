@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "admin invoices show page" do
   before :each do 
+    @merchant = FactoryBot.create(:merchant)
     @invoice = FactoryBot.create(:invoice)
     FactoryBot.create_list(:invoice_item, 4, invoice_id: @invoice.id )
     visit admin_invoice_path(@invoice.id)

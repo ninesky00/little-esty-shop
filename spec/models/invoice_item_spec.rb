@@ -64,12 +64,31 @@ describe InvoiceItem, type: :model do
       expect(@invoice4.invoice_items.invoice_amount_with_discount).to eq(1050)
     end
 
+    it "invoice_amount_with_discount should skip if already applied discount" do 
+      expect(@invoice2.invoice_items.invoice_amount).to eq(500)
+      expect(@invoice3.invoice_items.invoice_amount).to eq(1000)
+      expect(@invoice4.invoice_items.invoice_amount).to eq(1500)
+      expect(@invoice2.invoice_items.invoice_amount_with_discount).to eq(450)
+      expect(@invoice3.invoice_items.invoice_amount_with_discount).to eq(800)
+      expect(@invoice4.invoice_items.invoice_amount_with_discount).to eq(1050)
+      expect(@invoice2.invoice_items.invoice_amount_with_discount).to eq(450)
+      expect(@invoice3.invoice_items.invoice_amount_with_discount).to eq(800)
+      expect(@invoice4.invoice_items.invoice_amount_with_discount).to eq(1050)
+    end
+
     it "discounted_items" do 
       @invoice2.invoice_items[0].apply_discount
       @invoice3.invoice_items[0].apply_discount
       @invoice4.invoice_items[0].apply_discount
       expected = @invoice2.invoice_items[0], @invoice3.invoice_items[0], @invoice4.invoice_items[0]
-      expect(InvoiceItem.discounted_items).to eq(expected)
+      expect(InvoiceItem.discounted_items.to_a).to eq(expected)
+    end
+
+    it "regular_price_items" do
+      @invoice2.invoice_items.each { |invoice_item| invoice_item.apply_discount }
+      @invoice3.invoice_items.each { |invoice_item| invoice_item.apply_discount }
+      @invoice4.invoice_items.each { |invoice_item| invoice_item.apply_discount }
+      expect(InvoiceItem.regular_price_items).to eq(@invoice.invoice_items[0..-1])
     end
   end
 
@@ -87,16 +106,6 @@ describe InvoiceItem, type: :model do
       expect(@invoice2.invoice_items[0].discount_id).to eq(@discount.id)
       expect(@invoice3.invoice_items[0].discount_id).to eq(@discount2.id)
       expect(@invoice4.invoice_items[0].discount_id).to eq(@discount3.id)
-    end
-
-    it "discounted" do 
-      @invoice2.invoice_items[0].apply_discount
-      @invoice3.invoice_items[0].apply_discount
-      @invoice4.invoice_items[0].apply_discount
-      expect(@invoice.invoice_items[0].discounted?).to eq(false)
-      expect(@invoice2.invoice_items[0].discounted?).to eq(true)
-      expect(@invoice3.invoice_items[0].discounted?).to eq(true)
-      expect(@invoice4.invoice_items[0].discounted?).to eq(true)
     end
   end
   

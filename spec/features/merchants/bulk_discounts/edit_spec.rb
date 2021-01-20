@@ -22,4 +22,12 @@ RSpec.describe "bulk discount edit page" do
       expect(page).to have_content(30)
     end
   end
+  it "stays on the page if fields are not filled" do
+    fill_in "quantity_threshold", with: ""
+    fill_in "discount", with: ""
+    click_on "Update"
+
+    expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant, @discount))
+    
+  end
 end
