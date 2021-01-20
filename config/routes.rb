@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root "welcome#index"
   resources :merchants do
     member do
       get 'dashboard'
