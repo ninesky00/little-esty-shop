@@ -39,6 +39,17 @@ class InvoiceItem < ApplicationRecord
     self.invoice_amount
   end
 
+  def discounted?
+    discount_id ? true : false 
+  end
+
+  def self.discounted_items
+    where('discount_id > 0')
+  end
+
+  def self.regular_price_items
+    where('discount_id is null')
+  end
   # def self.invoice_amount_with_discount
   #   invoice_amount - discounted_price
   # end
