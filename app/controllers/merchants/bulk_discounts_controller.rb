@@ -2,7 +2,7 @@ class Merchants::BulkDiscountsController < ApplicationController
   before_action :set_merchant
   
   def index
-    @discounts = BulkDiscount.all
+    @discounts = @merchant.bulk_discounts
   end
 
   def new
