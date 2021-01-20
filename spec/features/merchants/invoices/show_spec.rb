@@ -10,7 +10,6 @@ RSpec.describe "Merchant Invoices show" do
       items.each do |item|
         create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 1)
       end
-      # create(:transaction, invoice: invoice, result: 0)
 
       visit merchant_invoice_path(merchant1, invoice)
 
@@ -29,7 +28,6 @@ RSpec.describe "Merchant Invoices show" do
       items.each do |item|
         create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 1)
       end
-      # create(:transaction, invoice: invoice, result: 0)
 
       visit merchant_invoice_path(merchant1, invoice)
 
@@ -70,7 +68,6 @@ RSpec.describe "Merchant Invoices show" do
       items.each do |item|
         create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 1)
       end
-      # create(:transaction, invoice: invoice, result: 0)
 
       visit merchant_invoice_path(merchant1, invoice)
 
@@ -92,6 +89,7 @@ RSpec.describe "Merchant Invoices show" do
         end
       end
     end
+
     it "total revenue" do
       merchant1 = create(:merchant)
       items = create_list(:item, 5, merchant: merchant1, unit_price: 1)
@@ -103,11 +101,31 @@ RSpec.describe "Merchant Invoices show" do
       items.each do |item|
         create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 1)
       end
-      # create(:transaction, invoice: invoice, result: 0)
 
       visit merchant_invoice_path(merchant1, invoice)
 
       expect(page).to have_content("Total Revenue: $#{invoice.invoice_amount}")
+    end
+
+    it "total revenue including discounts" do
+      merchant1 = create(:merchant)
+      discount = create(:discount, merchant: merchant1, quantity_threshold: 10, discount: 10)
+      items = create_list(:item, 5, merchant: merchant1, unit_price: 10)
+      discounted_items = create_list(:item, 5, merchant: merchant1, unit_price: 10)
+      customer = create(:customer, first_name: "Linda", last_name: "Mayhew")
+      invoice = create(:invoice, merchant: merchant1, customer: customer)
+
+      items.each do |item|
+        create(:invoice_item, item: item, invoice: invoice, quantity: 5, unit_price: 10)
+      end
+
+      discounted_items.each do |discounted_item|
+        create(:invoice_item, item: discounted_item, invoice: invoice, quantity: 10, unit_price: 10)
+      end
+
+      visit merchant_invoice_path(merchant1, invoice)
+
+      expect(page).to have_content("Total Revenue: $#{invoice.invoice_amount_with_discount}")
     end
   end
 end
