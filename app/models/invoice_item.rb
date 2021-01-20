@@ -13,7 +13,7 @@ class InvoiceItem < ApplicationRecord
 
   def self.find_discount(id)
     joins(merchant: :bulk_discounts)
-    .select("invoice_items.*, bulk_discounts.discount")
+    .select("invoice_items.*, bulk_discounts.discount, bulk_discounts.id as discount_id")
     .where("invoice_items.quantity >= bulk_discounts.quantity_threshold and invoice_items.id = #{id}")
     .order(discount: :desc)
     .limit(1)
@@ -23,13 +23,18 @@ class InvoiceItem < ApplicationRecord
   def apply_discount
     applicable = self.class.find_discount(self.id)
     if applicable
-      self.update_columns(unit_price: self.unit_price * ((100 - applicable.discount)/100.0))
+      self.update_columns(unit_price: self.unit_price * ((100 - applicable.discount)/100.0),
+                          discount_id: applicable.discount_id)
     end
   end
 
   def self.invoice_amount_with_discount
     self.all.each do |invoice_item|
-      invoice_item.apply_discount
+      if invoice_item.discount_id
+        next
+      else
+        invoice_item.apply_discount
+      end
     end
     self.invoice_amount
   end
