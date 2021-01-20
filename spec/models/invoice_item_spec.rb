@@ -54,6 +54,15 @@ describe InvoiceItem, type: :model do
       expect(InvoiceItem.find_discount(@invoice3.invoice_items.first.id).discount).to eq(20)
       expect(InvoiceItem.find_discount(@invoice4.invoice_items.first.id).discount).to eq(30)
     end
+
+    it "invoice_amount_with_discount" do 
+      expect(@invoice2.invoice_items.invoice_amount).to eq(500)
+      expect(@invoice3.invoice_items.invoice_amount).to eq(1000)
+      expect(@invoice4.invoice_items.invoice_amount).to eq(1500)
+      expect(@invoice2.invoice_items.invoice_amount_with_discount).to eq(450)
+      expect(@invoice3.invoice_items.invoice_amount_with_discount).to eq(800)
+      expect(@invoice4.invoice_items.invoice_amount_with_discount).to eq(1050)
+    end
   end
 
   describe "instance methods" do 
